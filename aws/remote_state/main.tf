@@ -1,6 +1,6 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # CREATE AN S3 BUCKET AND DYNAMODB TABLE TO USE AS A TERRAFORM BACKEND
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # ----------------------------------------------------------------------------------------------------------------------
 # REQUIRE A SPECIFIC TERRAFORM VERSION OR HIGHER
@@ -29,14 +29,17 @@ locals {
 }
 
 resource "aws_s3_bucket" "terraform_state" {
-  # With account id, this S3 bucket names can be *globally* unique.
-  bucket = "${local.account_id}-terraform-states"
+  bucket = "your-bucket-name"
+  // other configurations
+}
 
-  # Enable versioning so we can see the full revision history of our
-  # state files
-  versioning {
+resource "aws_s3_bucket_versioning" "terraform_state_versioning" {
+  bucket = aws_s3_bucket.terraform_state.id
+
+  versioning_configuration {
     enabled = true
   }
+}
 
   # Enable server-side encryption by default
   server_side_encryption_configuration {
@@ -46,7 +49,6 @@ resource "aws_s3_bucket" "terraform_state" {
       }
     }
   }
-}
 
 # ------------------------------------------------------------------------------
 # CREATE THE DYNAMODB TABLE
