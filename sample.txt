@@ -4,6 +4,10 @@ Subtraction
 
 Division
 
+<<<<<<< HEAD
 Percentage-rebase
 
 This is a test to ignore
+=======
+Multiplication
+>>>>>>> e86f8a5 (Merge)
